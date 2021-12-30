@@ -11,9 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -45,4 +43,4 @@ jobs:
       uses: codecov/codecov-action@v2
       with:
         fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        token: ${{ secrets.CODECOV_TOKEN }} # look at codecov.io for the repo and the token!

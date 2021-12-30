@@ -8,7 +8,6 @@ class TestReleases:
     def test_api_release_url(self):
 
         test_table = [
-
             {
                 "repo_url": "https://github.com/schmiddim/action-wget-unzip",
                 "want": "https://api.github.com/repos/schmiddim/action-wget-unzip/releases/latest"
@@ -30,11 +29,6 @@ class TestReleases:
             assert got == want
 
     def test_assets(self):
-        for test in TestReleases.get_test_table():
-            data = TestReleases.load_json_fixture(test.get("path"))
-            want = test.get("assets")
-            got = get_assets(data)
-            assert len(got) == want
 
         data = TestReleases.load_json_fixture("tests/fixtures/releases-chia-miner.json")
         want = "https://github.com/hpool-dev/chia-miner/releases/download/1.5.6/HPool-Miner-chia-og-v1.5.6-1-linux.zip"

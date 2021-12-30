@@ -14,13 +14,9 @@ def get_latest_tag(release: dict):
     return tag
 
 
-def get_assets(release: dict):
-    assets = release.get("assets")
-    return assets
-
-
 def get_asset_download_url_by_pattern(release: dict, pattern):
-    for asset in get_assets(release):
+    for asset in release.get("assets"):
         download_url = asset.get("browser_download_url")
         if re.match(pattern, download_url):
             return download_url
+    return ""

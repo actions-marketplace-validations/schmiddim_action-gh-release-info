@@ -21,7 +21,9 @@ if __name__ == '__main__':
         if args.pattern is None:
             print("--pattern must be passed when mode is asset_url")
             exit(1)
+        url=get_asset_download_url_by_pattern(data, args.pattern)
+        print(url)
+        print(f"::set-output name=release_info::{url}")
 
-        print(get_asset_download_url_by_pattern(data, args.pattern))
-    if args.mode == "release_tag":
+if args.mode == "release_tag":
         print(get_latest_tag(data))

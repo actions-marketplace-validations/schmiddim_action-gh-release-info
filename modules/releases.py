@@ -16,3 +16,8 @@ def get_api_url_for_repo(url: str):
         url += "/"
     url += "releases"
     return url
+
+
+def get_latest_tag(releases: list):
+    tag = releases[0].get('tag_name')
+    return tag

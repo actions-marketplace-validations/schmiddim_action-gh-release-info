@@ -8,7 +8,7 @@ jobs:
     name: Integration Test
     steps:
       - name: Get Asset Url for an linux release
-        uses: actions/schmiddim-action-gh-release-info@master
+        uses: schmiddim-action-gh-release-info@master
         id: fetch-url
         with:
           url: https://github.com/hpool-dev/chia-miner/

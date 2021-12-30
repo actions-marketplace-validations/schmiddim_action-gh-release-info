@@ -1,3 +1,16 @@
-pytest
+pytest~=6.2.5
 pytest-httpserver
 pytest-cov
+
+py~=1.11.0
+pip~=20.0.2
+toml~=0.10.2
+attrs~=21.2.0
+requests
+Werkzeug~=2.0.2
+tomli~=2.0.0
+pluggy~=1.0.0
+iniconfig~=1.1.1
+coverage~=6.2
+pyparsing~=3.0.6
+setuptools~=44.0.0

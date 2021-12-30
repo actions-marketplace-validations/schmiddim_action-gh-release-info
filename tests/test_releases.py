@@ -6,11 +6,21 @@ from modules.releases import *
 class TestReleases:
 
     def test_api_release_url(self):
-        repo_url = "https://github.com/schmiddim/action-wget-unzip"
-        want = "https://api.github.com/repos/schmiddim/action-wget-unzip/releases"
-        got = get_api_url_for_repo(repo_url)
 
-        assert got == want
+        test_table = [
+
+            {
+                "repo_url": "https://github.com/schmiddim/action-wget-unzip",
+                "want": "https://api.github.com/repos/schmiddim/action-wget-unzip/releases/latest"
+            },
+            {
+                "repo_url": "https://github.com/hpool-dev/chia-miner/",
+                "want": "https://api.github.com/repos/hpool-dev/chia-miner/releases/latest"
+            },
+        ]
+        for test in test_table:
+            got = get_api_url_for_repo(test.get("repo_url"))
+            assert got == test.get("want")
 
     def test_get_tag(self):
         for test in TestReleases.get_test_table():

@@ -19,11 +19,15 @@ This action fetches information about the latest Release for a repo and returns 
 Pattern to look for 
 ## Example usage
 ```
-uses: actions/schmiddim-action-gh-release-info@v1
-with:
-  url: https://github.com/hpool-dev/chia-miner/
-  mode: download_url_pattern
-  download_url_pattern: .*linux
+  - name: Get Asset Url for an linux release
+    uses: schmiddim/action-gh-release-info@master
+    id: hello
+    with:
+      url: https://github.com/hpool-dev/chia-miner/
+      download_url_pattern: .*linux
 ```
-
-Output will be stored in **release_info**
+Consume the outputs with
+```
+${{ steps.hello.outputs.release_url }}
+${{ steps.hello.outputs.release_tag }}
+```

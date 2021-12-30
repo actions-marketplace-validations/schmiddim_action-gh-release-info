@@ -12,7 +12,6 @@ jobs:
         id: hello
         with:
           url: https://github.com/hpool-dev/chia-miner/
-          mode: asset_url
           download_url_pattern: .*linux
       - name: Download and extract
         uses: schmiddim/action-wget-unzip@v1

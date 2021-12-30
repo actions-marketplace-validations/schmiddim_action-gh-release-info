@@ -5,9 +5,6 @@ inputs:
   url:
     description: "url that must point to a Github Repo"
     required: true
-  mode:
-    description: "asset_url || release_tag"
-    required: true
   download_url_pattern:
     description: "Python Re pattern to look for"
     required: false

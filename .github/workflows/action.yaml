@@ -1,0 +1,21 @@
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  release-info:
+    runs-on: ubuntu-latest
+    name: Integration Test
+    steps:
+      - name: Get Asset Url for an linux release
+        uses: actions/schmiddim-action-gh-release-info@v1
+        id: fetch-url
+        with:
+          url: https://github.com/hpool-dev/chia-miner/
+          mode: download_url_pattern
+          download_url_pattern: .*linux
+      - name: Download and extract
+        uses: schmiddim/action-wget-unzip@master
+        id: test
+        with:
+          url: ${{ steps.fetch-url.outputs.release_info }}
+          destination: i-do-not-care

@@ -1,0 +1,26 @@
+name: "schmiddim-action-gh-release-info"
+author: Michael Schmitt
+description: This action fetches informations about Github Releases (download asset url, tag name)
+inputs:
+  url:
+    description: "url that must point to a Github Repo"
+    required: true
+  mode:
+    description: "asset_url || release_tag"
+    required: true
+  download_url_pattern:
+    description: "Python Re pattern to look for"
+    required: false
+outputs:
+  release_info:
+    description: "Release Tag || Asset Url"
+branding:
+  color: red
+  icon: download
+runs:
+  using: docker
+  image: 'Dockerfile'
+  args:
+    - --url=${{ inputs.url }}
+    - --mode=${{ inputs.mode }}
+    - --pattern=${{ inputs.download_url_pattern }}

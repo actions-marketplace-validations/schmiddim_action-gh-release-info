@@ -29,3 +29,12 @@ Consume the outputs with
 ${{ steps.hello.outputs.release_url }}
 ${{ steps.hello.outputs.release_tag }}
 ```
+
+
+
+
+## Dev 
+Run tests
+```
+PYTHONPATH=. pytest tests/
+```

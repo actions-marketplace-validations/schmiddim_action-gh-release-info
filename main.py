@@ -1,5 +1,4 @@
 import argparse
-import requests as r
 from modules.releases import *
 
 if __name__ == '__main__':
@@ -8,8 +7,7 @@ if __name__ == '__main__':
     parser.add_argument('--pattern', dest='pattern', help="pattern for download url", required=False, default=".*")
     args = parser.parse_args()
 
-    api_url = get_api_url_for_repo(args.url)
-    data = r.get(api_url).json()
+    tag, release_url = get_tag_and_download_url(args.url, args.pattern)
 
-    print("::set-output name=release_url::{}".format(get_asset_download_url_by_pattern(data, args.pattern)))
-    print("::set-output name=release_tag::{}".format(get_latest_tag(data)))
+    print("::set-output name=release_url::{}".format(release_url))
+    print("::set-output name=release_tag::{}".format(tag))

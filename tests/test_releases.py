@@ -1,56 +1,72 @@
 import json
-
-from modules.releases import *
+from modules.releases import _get_data_from_api, _get_api_url_for_repo
+from modules.releases import _get_latest_tag, _get_asset_download_url_by_pattern
+from modules.releases import get_tag_and_download_url
+import requests_mock.mocker
 
 
 class TestReleases:
 
     def test_api_release_url(self):
-
-        test_table = [
-            {
-                "repo_url": "https://github.com/schmiddim/action-wget-unzip",
-                "want": "https://api.github.com/repos/schmiddim/action-wget-unzip/releases/latest"
-            },
-            {
-                "repo_url": "https://github.com/hpool-dev/chia-miner/",
-                "want": "https://api.github.com/repos/hpool-dev/chia-miner/releases/latest"
-            },
-        ]
-        for test in test_table:
-            got = get_api_url_for_repo(test.get("repo_url"))
-            assert got == test.get("want")
+        for test in TestReleases._get_test_table():
+            got = _get_api_url_for_repo(test.get("repo_url"))
+            assert got == test.get("want_release_url")
 
     def test_get_tag(self):
-        for test in TestReleases.get_test_table():
-            data = TestReleases.load_json_fixture(test.get("path"))
+        for test in TestReleases._get_test_table():
+            data = TestReleases._load_json_fixture(test.get("path"))
             want = test.get("tag")
-            got = get_latest_tag(data)
+            got = _get_latest_tag(data)
             assert got == want
 
-    def test_assets(self):
+    def test_assets(self, requests_mock: requests_mock.mocker.Mocker):
+        for test in TestReleases._get_test_table():
+            response = TestReleases._load_json_fixture(test.get("path"))
+            requests_mock.get(test.get("want_release_url"), json=response)
+            result = _get_data_from_api(test.get("want_release_url"))
+            got = _get_asset_download_url_by_pattern(result, ".*linux")
+            assert got == test.get("want_download_url")
 
-        data = TestReleases.load_json_fixture("tests/fixtures/releases-chia-miner.json")
-        want = "https://github.com/hpool-dev/chia-miner/releases/download/1.5.6/HPool-Miner-chia-og-v1.5.6-1-linux.zip"
-        got = get_asset_download_url_by_pattern(data, ".*linux")
+    def test_requests_mock(self, requests_mock: requests_mock.mocker.Mocker):
+        response = {}
+        requests_mock.get('http://aurl.com', json=response)
+        result = _get_data_from_api('http://aurl.com')
+        assert result == response
 
-        assert got == want
+    def test_integration(self, requests_mock: requests_mock.mocker.Mocker):
+        for test in TestReleases._get_test_table():
+            response = TestReleases._load_json_fixture(test.get("path"))
+            requests_mock.get(test.get("want_release_url"), json=response)
+            result = _get_data_from_api(test.get("want_release_url"))
+            got = _get_asset_download_url_by_pattern(result, ".*linux")
+
+            tag, release_url = get_tag_and_download_url(test.get("repo_url"), ".*linux")
+
+            assert release_url == test.get("want_download_url")
+            assert tag == test.get("tag")
 
     @staticmethod
-    def get_test_table():
+    def _get_test_table():
         return [
 
             {"path": "tests/fixtures/releases-wget-unzip.json",
+             "repo_url": "https://github.com/schmiddim/action-wget-unzip",
+             "want_release_url": "https://api.github.com/repos/schmiddim/action-wget-unzip/releases/latest",
+             "want_download_url": "",
              "tag": "v2",
              "assets": 0
              },
-            {"path": "tests/fixtures/releases-chia-miner.json",
-             "tag": "1.5.6",
-             "assets": 4
-             }
+            {
+                "repo_url": "https://github.com/hpool-dev/chia-miner/",
+                "want_release_url": "https://api.github.com/repos/hpool-dev/chia-miner/releases/latest",
+                "want_download_url": "https://github.com/hpool-dev/chia-miner/releases/download/1.5.6/HPool-Miner-chia-og-v1.5.6-1-linux.zip",
+                "path": "tests/fixtures/releases-chia-miner.json",
+                "tag": "1.5.6",
+                "assets": 4
+            }
         ]
 
     @staticmethod
-    def load_json_fixture(path):
+    def _load_json_fixture(path):
         with open(path) as file:
             return json.load(file)

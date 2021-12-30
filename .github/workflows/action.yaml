@@ -15,7 +15,7 @@ jobs:
           mode: asset_url
           download_url_pattern: .*linux
       - name: Download and extract
-        uses: schmiddim/action-wget-unzip@v2
+        uses: schmiddim/action-wget-unzip@v1
         with:
           url: "${{ steps.hello.outputs.release_info }}"
           destination: i-do-not-care

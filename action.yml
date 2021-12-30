@@ -12,8 +12,10 @@ inputs:
     description: "Python Re pattern to look for"
     required: false
 outputs:
-  release_info:
-    description: "Release Tag || Asset Url"
+  release_url:
+    description: "Asset Url"
+  release_tag:
+    description: "Release Tag"
 branding:
   color: red
   icon: download

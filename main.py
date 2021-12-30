@@ -16,14 +16,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
     api_url = get_api_url_for_repo(args.url)
     data = r.get(api_url).json()
-
+    url = get_asset_download_url_by_pattern(data, args.pattern)
+    tag = get_latest_tag(data)
     if args.mode == "asset_url":
         if args.pattern is None:
             print("--pattern must be passed when mode is asset_url")
             exit(1)
-        url=get_asset_download_url_by_pattern(data, args.pattern)
-        print(url)
-        print(f"::set-output name=release_info::{url}")
 
-if args.mode == "release_tag":
+        print(url)
+        print(f"::set-output name=release_url::{url}")
+        print(f"::set-output name=release_tag::{tag}")
+
+    if args.mode == "release_tag":
         print(get_latest_tag(data))

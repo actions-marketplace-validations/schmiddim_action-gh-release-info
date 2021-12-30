@@ -2,6 +2,10 @@ import argparse
 from modules.releases import *
 
 if __name__ == '__main__':
+    """
+    @todo test main on integration
+    
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--url', dest='url', help="url to github repo", required=True)
     parser.add_argument('--pattern', dest='pattern', help="pattern for download url", required=False, default=".*")

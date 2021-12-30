@@ -10,7 +10,6 @@ if __name__ == '__main__':
 
     api_url = get_api_url_for_repo(args.url)
     data = r.get(api_url).json()
-    url = get_asset_download_url_by_pattern(data, args.pattern)
-    tag = get_latest_tag(data)
-    print(f"::set-output name=release_url::{url}")
-    print(f"::set-output name=release_tag::{tag}")
+
+    print("::set-output name=release_url::{}".format(get_asset_download_url_by_pattern(data, args.pattern)))
+    print("::set-output name=release_tag::{}".format(get_latest_tag(data)))

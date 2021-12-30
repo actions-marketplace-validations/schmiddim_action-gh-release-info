@@ -24,5 +24,4 @@ runs:
   image: 'Dockerfile'
   args:
     - --url=${{ inputs.url }}
-    - --mode=${{ inputs.mode }}
     - --pattern=${{ inputs.download_url_pattern }}

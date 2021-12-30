@@ -18,6 +18,6 @@ def get_api_url_for_repo(url: str):
     return url
 
 
-def get_latest_tag(releases: list):
-    tag = releases[0].get('tag_name')
+def get_latest_tag(releases: dict):
+    tag = releases.get('tag_name')
     return tag

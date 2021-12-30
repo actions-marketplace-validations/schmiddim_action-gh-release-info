@@ -13,10 +13,22 @@ class TestReleases:
         assert got == want
 
     def test_get_tag(self):
-        data = TestReleases.load_json_fixture("tests/fixtures/releases-wget-unzip.json")
-        want = "v2"
-        got = get_latest_tag(data)
-        assert got == want
+        test_table = [
+
+            {"path": "tests/fixtures/releases-wget-unzip.json",
+             "tag": "v2"
+
+             },
+            {"path": "tests/fixtures/releases-chia-miner.json",
+             "tag": "1.5.6"
+
+             }
+        ]
+        for test in test_table:
+            data = TestReleases.load_json_fixture(test.get("path"))
+            want = test.get("tag")
+            got = get_latest_tag(data)
+            assert got == want
 
     @staticmethod
     def load_json_fixture(path):

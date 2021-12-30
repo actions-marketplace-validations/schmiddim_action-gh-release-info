@@ -11,12 +11,10 @@ This action fetches information about the latest Release for a repo and returns 
 ## `url`
 
 **Required** Url to Repo
-## `mode`
 
-**Required**  asset_url || release_tag
 ## `download_url_pattern`
 
-Pattern to look for 
+**Optional** Pattern to look for 
 ## Example usage
 ```
   - name: Get Asset Url for an linux release

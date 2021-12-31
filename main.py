@@ -1,6 +1,14 @@
 import argparse
 from modules.releases import *
 
+
+def main(args):
+    tag, release_url = get_tag_and_download_url(args.url, args.pattern)
+
+    print("::set-output name=release_url::{}".format(release_url))
+    print("::set-output name=release_tag::{}".format(tag))
+
+
 if __name__ == '__main__':
     """
     @todo test main on integration
@@ -11,7 +19,4 @@ if __name__ == '__main__':
     parser.add_argument('--pattern', dest='pattern', help="pattern for download url", required=False, default=".*")
     args = parser.parse_args()
 
-    tag, release_url = get_tag_and_download_url(args.url, args.pattern)
-
-    print("::set-output name=release_url::{}".format(release_url))
-    print("::set-output name=release_tag::{}".format(tag))
+    main(args)

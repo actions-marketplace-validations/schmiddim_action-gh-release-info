@@ -2,6 +2,9 @@ import json
 from modules.releases import _get_data_from_api, _get_api_url_for_repo
 from modules.releases import _get_latest_tag, _get_asset_download_url_by_pattern
 from modules.releases import get_tag_and_download_url
+from argparse import Namespace
+
+from main import main
 import requests_mock.mocker
 
 
@@ -45,6 +48,18 @@ class TestReleases:
             assert release_url == test.get("want_download_url")
             assert tag == test.get("tag")
 
+    def test_integration_main(self, requests_mock: requests_mock.mocker.Mocker, capsys):
+        for test in TestReleases._get_test_table():
+            response = TestReleases._load_json_fixture(test.get("path"))
+            requests_mock.get(test.get("want_release_url"), json=response)
+            args = Namespace(url=test.get("repo_url"), pattern=".*linux")
+            main(args)
+            out, err = capsys.readouterr()
+            assert """::set-output name=release_url::{}
+::set-output name=release_tag::{}
+""".format(test.get("want_download_url"), test.get("tag")) == out
+            assert "" == err
+
     @staticmethod
     def _get_test_table():
         return [
@@ -55,6 +70,7 @@ class TestReleases:
              "want_download_url": "",
              "tag": "v2",
              "assets": 0
+
              },
             {
                 "repo_url": "https://github.com/hpool-dev/chia-miner/",

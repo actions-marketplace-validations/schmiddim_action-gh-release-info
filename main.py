@@ -2,8 +2,8 @@ import argparse
 from modules.releases import *
 
 
-def main(args):
-    tag, release_url = get_tag_and_download_url(args.url, args.pattern)
+def main(arguments):
+    tag, release_url = get_tag_and_download_url(arguments.url, arguments.pattern)
 
     print("::set-output name=release_url::{}".format(release_url))
     print("::set-output name=release_tag::{}".format(tag))

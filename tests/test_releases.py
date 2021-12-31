@@ -1,5 +1,5 @@
 import json
-from modules.releases import _get_data_from_api, _get_api_url_for_repo
+from modules.releases import _get_data_from_api, _get_api_url_for_repo  # pylint: disable=W0212
 from modules.releases import _get_latest_tag, _get_asset_download_url_by_pattern
 from modules.releases import get_tag_and_download_url
 from argparse import Namespace
@@ -54,10 +54,12 @@ class TestReleases:
             requests_mock.get(test.get("want_release_url"), json=response)
             args = Namespace(url=test.get("repo_url"), pattern=".*linux")
             main(args)
-            out, err = capsys.readouterr()
-            assert """::set-output name=release_url::{}
+            got_output, err = capsys.readouterr()
+
+            want = """::set-output name=release_url::{}
 ::set-output name=release_tag::{}
-""".format(test.get("want_download_url"), test.get("tag")) == out
+""".format(test.get("want_download_url"), test.get("tag"))
+            assert want == got_output
             assert "" == err
 
     @staticmethod
